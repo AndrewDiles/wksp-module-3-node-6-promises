@@ -11,10 +11,12 @@
 
 const opencage = require('opencage-api-client');
 
+// reverse: https://api.opencagedata.com/geocode/v1/json?q=LAT+LNG&key=8f506f68366f402982ff4c3960c934b5
+// forward: https://api.opencagedata.com/geocode/v1/json?q=PLACENAME&key=8f506f68366f402982ff4c3960c934b5
 
 function getAddressPosition(address) {
     const requestObj = {
-        key: '1315122032774d06b34c570f3bd70f7b',
+        key: '8f506f68366f402982ff4c3960c934b5',  // Scott's: 1315122032774d06b34c570f3bd70f7b
         q: address
     };
 
@@ -23,8 +25,11 @@ function getAddressPosition(address) {
             // if (data.status.code == 200) {
                 // if (data.results.length > 0) {
                     const place = data.results[0];
-                    // console.log(place.geometry);
-                    return place;
+
+                    // console.log(`lng: ${place.geometry.lng}, lat: ${place.geometry.lat}`);
+
+                    // return JSON.stringify(data);
+                    return {lat: place.geometry.lat, lng: place.geometry.lng};
                 // }
             // } else {
             //     // other possible response codes:
@@ -32,7 +37,13 @@ function getAddressPosition(address) {
             //     console.log('error', data.status.message);
             // }
         })
+        .then(data => {
+            console.log(data);
+        })
         .catch(error => console.log('error', error.message));
 }
 
-console.log(getAddressPosition('1455 Boulevard de Maisonneuve O, Montréal, QC H3G 1M8'));
+// console.log(getAddressPosition('1455 Boulevard de Maisonneuve O, Montréal, QC H3G 1M8'));
+getAddressPosition('1455 Boulevard de Maisonneuve O, Montréal, QC H3G 1M8');
+
+getAddressPosition('74 Rue De Galais, Boisbriand, QC J7G 1P7');
